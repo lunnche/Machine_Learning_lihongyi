@@ -555,15 +555,18 @@ Example 2
 * 1000 examples (N=1000)
 * Batch size is 100 (B=100) （Batch size的大小也是人为决定的，也是hyper parameter）
 <hr>
+
 插入：所以到目前为止都有啥是hyper parameter:  <br>
 learning rate $\eta$ <br>
 几个sigmoid <br>
 batch size <br>
+
 <hr>
+
 How many update in 1 epoch
                  10 updates
 
-所以如果有人跟你说做了一个epoch的训练，你其实并不知道他更新了几次参数。拒绝于总样本数和batch size。
+所以如果有人跟你说做了一个epoch的训练，你其实并不知道他更新了几次参数。取决于总样本数和batch size。
 
 我们还可以对模型做更多的变形：
 
@@ -638,16 +641,41 @@ Neural Network 80 90 年代就有 被玩到 臭大街
 这里有个问题，用足够多的sigmoid 或者 ReLU 排一排（1 hidden layer）就可以逼近任何复杂的连续函数，搞多层，搞deep的意义何在？所以有人说deep learning 只是个噱头  
 把sigmoid ReLU排一排，构造一个fat neural network不行吗，为啥要搞deep neural network?  以后再讲  
 
-另一个为题，为何不做得更深？上例为何只搞3层，不稿100层？因为发现到4 layer的时候，已知数据Loss虽然从0.14k减少为0.10k，但未知数据的Loss从0.38k增加到0.44k  
+另一个问题，为何不做得更深？上例为何只搞3层，不稿100层？因为发现到4 layer的时候，已知数据Loss虽然从0.14k减少为0.10k，但未知数据的Loss从0.38k增加到0.44k  
 Better on training data,worse on unseen data  
 这就是 overfitting  
 
 所以，以上就是深度学习的介绍，介绍的形式比较特殊  
-想看一般形式的介绍： https://youtu.be/Dr-WRIEFefw  
+想看一般形式的介绍： https://youtu.be/Dr-WRIEFefw    啥破玩意，看不了
 
 深度学习的训练会用到一个东西叫做 backpropagation  
 https://youtu.be/ibJpTrp5mcE  
 
 p3 结束
 
+# Backpropagation  反向传播  
 
+如果你用Gradient descent 来训练一个神经网络，应该怎么做  
+
+在训练神经网络时，反向传播这个算法是如何运作？从而使得neural network的training 比较有效率  
+
+当你用Gradient Descent方法的时候，跟我们在做Logistic Regression，还有Linear Regression等等，没有太大的差别，但最大的问题是，在neural network里面，我们有非常非常多的参数，  
+如果你要做语音辨识系统的话呢，你的neural network通常会有7，8层，每层1000个neuron，它有上百万个参数，所以 $\nabla L(\theta)$ 这个向量它非常非常长，上百万维的vector，  
+要如何有效地去把这一个百万维的vector计算出来，这就是Backpropagation做的事情。  
+
+所以，Backpropagation并不是一个和Gradient Descent不同的训练方法，它就是Gradient Descent,它只是一个比较有效率的演算法，让你在计算gradient那个vector时比较有效率，
+
+![Screen Shot 2022-01-10 at 10.06.04 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-10%20at%2010.06.04%20PM.png)
+
+Backpropagation里面没有高深的数学，唯一需要记住的就只有 Chain Rule  
+
+![Screen Shot 2022-01-10 at 10.12.22 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-10%20at%2010.12.22%20PM.png)
+
+![Screen Shot 2022-01-10 at 10.16.35 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-10%20at%2010.16.35%20PM.png)
+
+对于这个式子，我们不用想说计算 $\frac{\partial{L}}{\partial{w}}$ 我们只考虑如何计算
+对某一笔data的 $\frac{\partial{C^n(\theta)}}{\partial{w}}$ ,再summation over 所有的training data。 你就可以把total loss对某一个参数的偏微分算出来了。我们只需focus对某一笔data，它的cost $C^n$ 对 w的偏微分怎么计算这一项上面，  
+
+怎么做呢，我们先考虑一个neuron，  
+
+看到 backpropagation 8:05 
