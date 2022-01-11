@@ -676,6 +676,30 @@ Backpropagation里面没有高深的数学，唯一需要记住的就只有 Chai
 对于这个式子，我们不用想说计算 $\frac{\partial{L}}{\partial{w}}$ 我们只考虑如何计算
 对某一笔data的 $\frac{\partial{C^n(\theta)}}{\partial{w}}$ ,再summation over 所有的training data。 你就可以把total loss对某一个参数的偏微分算出来了。我们只需focus对某一笔data，它的cost $C^n$ 对 w的偏微分怎么计算这一项上面，  
 
-怎么做呢，我们先考虑一个neuron，  
+怎么做呢，我们先考虑某一个neuron，这个neuron在第一个layer，所以它前面的input就是外界给它的input，x1,x2,他们分别乘上权重w1,w2,再加上b，会得到z，得到z以后通过activation function ，再经过非常非常多的事情以后，你会得到最终的output，y1,y2。  
 
-看到 backpropagation 8:05 
+现在问题是：假设我们从这边拿出一个w出来，拿weight当做z，来看怎么计算，某一个weight对cost,对example的某一个cost的偏微分，按照Chain Rule，$ \frac{\partial{C}}{\partial{w}} $可以把它拆成两项:  
+$$
+\frac{\partial{C}}{\partial{w}}=? \ \ 
+\frac{\partial{z}}{\partial{w}}
+\frac{\partial{C}}{\partial{z}}
+
+$$
+
+右边的两项，我们分别计算，第一项很简单，后面项比较复杂。  
+
+计算前面这项，即 Compute $\frac{\partial{z}}{\partial{w}}$ for all parameters 称为Forward pass,  
+计算后面这项，叫Backward pass  
+
+计算 
+
+$$
+\frac{\partial{z}}{\partial{w_1}}=?  
+$$
+就是秒算，因为 $ z=x_1w_1+x_2w_2+b$
+所以，一眼就知道等于x1  
+
+那 $\frac{\partial{z}}{\partial{w_2}}$呢
+
+到10：25了
+
