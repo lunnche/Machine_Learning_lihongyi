@@ -683,7 +683,6 @@ $$
 \frac{\partial{C}}{\partial{w}}=? \ \ 
 \frac{\partial{z}}{\partial{w}}
 \frac{\partial{C}}{\partial{z}}
-
 $$
 
 右边的两项，我们分别计算，第一项很简单，后面项比较复杂。  
@@ -699,7 +698,11 @@ $$
 就是秒算，因为 $ z=x_1w_1+x_2w_2+b$
 所以，一眼就知道等于x1  
 
-那 $\frac{\partial{z}}{\partial{w_2}}$呢
+那 $\frac{\partial{z}}{\partial{w_2}}$呢 x2   都是秒算  
+规律就是：
 
-到10：25了
+![Screen Shot 2022-01-12 at 5.49.55 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-12%20at%205.49.55%20PM.png)
 
+所以给你一个神经网络，计算 $\frac{\partial{z}}{\partial{w}}$ 非常简单
+
+到13：02
