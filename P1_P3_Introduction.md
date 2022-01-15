@@ -704,5 +704,163 @@ $$
 ![Screen Shot 2022-01-12 at 5.49.55 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-12%20at%205.49.55%20PM.png)
 
 所以给你一个神经网络，计算 $\frac{\partial{z}}{\partial{w}}$ 非常简单
+非常直觉，同样的process你就反复在做  
+你要算出这个neural network里面的每一个weight对它的activation function的inputz 的偏微分，你就把input丢进去，然后，计算每一个neuron的output，就结束了。这个步骤叫做Forward pass.
 
-到13：02
+
+![Screen Shot 2022-01-15 at 3.45.23 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-15%20at%203.45.23%20PM.png)
+
+## Backward pass  
+
+compute $\frac{\partial{C}}{\partial{z}}$ for all activation function inputs z  
+
+z经过很复杂的process得到C，为求解，做下拆解  
+
+假设activation function是sigmoid function   
+
+$$
+a=\sigma(z)
+$$
+
+z通过sigmoid funtion 得到a，这个neuron的output是a，接下来这个a乘上一个weight，再加其他一大堆value，得到z‘  ，这个z'是下一个neuron activation function的input  
+
+a会再乘上另一个weight，这边写成w4,再加其他一大堆东西，得到z'',  
+
+$$
+\frac{\partial{C}}{\partial{z}}
+=
+\frac{\partial{a}}{\partial{z}}
+\frac{\partial{C}}{\partial{a}}
+$$
+
+$ a=\sigma(z)$ 所以 $\frac{\partial{a}}{\partial{z}}$ = $\sigma'(z)$  
+其实就是这个sigmoid function的微分 它的样子见下图  
+
+![Screen Shot 2022-01-15 at 4.28.10 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-15%20at%204.28.10%20PM.png)
+
+然后，$\frac{\partial{C}}{\partial{z}}$ 长什么样子呢：  
+
+$$
+\frac{\partial{C}}{\partial{a}}=
+\frac{\partial{z'}}{\partial{a}}
+\frac{\partial{C}}{\partial{z'}}+
+\frac{\partial{z''}}{\partial{a}}
+\frac{\partial{C}}{\partial{z''}}
+\ \ \ \ (Chain\ \ rule)
+$$
+
+上式：a和C的关系是怎样的，a会影响z'和z''，z'和z''会影响C  
+a透过z'和z''去影响C  
+
+我们假设a后面，就是这个蓝色neuron的下一个layer，红色neuron只有两个，所以这边就只有两项，如果有1000个红色neuron的话，那这边chain rule里的summation就是summation over 1000项   
+
+接下来$\frac{\partial{z''}}{\partial{a}}$ 
+$$
+z'=aw_3+\dots
+$$
+
+z'等于a乘上w3，再加上一些有的没的东西
+这个也是秒算，就是w3  
+
+最后的问题 z'和z''对C的偏微分怎么算  
+$$
+\frac{\partial{C}}{\partial{z''}}\\
+\frac{\partial{C}}{\partial{z'}}
+$$
+
+我们不知道z’和z''跟C的关系，因为后边还有一长串，我们搞不清后面会发生什么事情，不过没关系，我们就假设我们知道，假设这两项的值，我们已经透过某种方法把它算出来，我们透过一个等一下会讲，但你还不知道怎么做的方法  
+
+![Screen Shot 2022-01-15 at 4.52.02 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-15%20at%204.52.02%20PM.png)
+
+假设我们算出了这两项的值，我们就可以把$\frac{\partial{C}}{\partial{z}}$轻易地算出来  
+
+$$
+\begin{aligned}
+\frac{\partial{C}}{\partial{z}}&=
+\frac{\partial{a}}{\partial{z}}
+\frac{\partial{C}}{\partial{a}} \\
+&=\sigma'(z)\left[
+w_3 \frac{\partial{C}}{\partial{z'}}+
+w_4 \frac{\partial{C}}{\partial{z''}}
+\right]
+\end{aligned}
+$$
+
+
+
+![Screen Shot 2022-01-15 at 5.03.56 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-15%20at%205.03.56%20PM.png)
+
+
+
+上式可以从另一个观点来看待：
+你可以想象，现在有另一个neuron，这个neuron并不在我们原来的network里面，我们把它画成三角形，这个neuron的input就是$\frac{\partial{C}}{\partial{z'}}$和$\frac{\partial{C}}{\partial{z''}}$  
+第一个input乘上w3，第二个input乘上w4,两个乘积加起来的和再乘上activation function，也就是$\sigma'(z)$,得到output，就是$\frac{\partial{C}}{\partial{z}}$  
+
+即下图中上面这个neuron所做的运算跟下面这个式子，是一模一样的，我们只是把下面这个式子画出来，让它看起来像一个neuron一样，那这个$\sigma'(z)$ 其实是一个常数，是个constant而非function，因为z其实在计算Forward pass 的时候就被决定了，z是一个已经固定的我们知道它是多少的值，所以在给定z的情况下，$\sigma'(z)$就是一个常数，  
+
+所以这个neuron和我们之前看到的sigmoid function是不一样的，它并不是把input通过一个non-linear的转换，而是直接把input乘上一个constant，$\sigma'(z)$ ,就得到一个output，所以把这个neuron画成三角以示和圆形neuron的运作方式是不一样的，  
+然后你可能会问，为什么是三角形，因为我是电机系的，我觉得这是一种op-amp这样子，op-amp就会乘上一个constant，它是一个放大器。
+
+
+
+![Screen Shot 2022-01-15 at 5.24.40 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-15%20at%205.24.40%20PM.png)
+
+那最后的问题还是回到，怎么算那两项：z'和z''对C的偏微分。  
+
+我们假设两个不同的case  
+第一个case：假设现在红色两个neuron已经是output layer 即y1和y2了，它的output就已经是这个network的output了。所以：  
+$$
+\frac{\partial{C}}{\partial{z'}}=
+\frac{\partial{y_1}}{\partial{z'}}
+\frac{\partial{C}}{\partial{y_1}}
+$$
+
+$\frac{\partial{y_1}}{\partial{z'}}$ 没问题，你只要知道activation funcation长什么样子，这项就轻而易举地算出来了，  
+$\frac{\partial{C}}{\partial{y_1}}$ ，y1对C有什么影响，depend on你的cost function是怎么定义的，你的output跟target之间是怎么evaluate的，你可以用cross entropy,可以用mean square error,总之它是个比较简单的东西，你可以把它算出来。
+同样的$\frac{\partial{C}}{\partial{z''}}$也没问题
+
+所以如果蓝色的neuron在最后一个hidden layer里面，它后面就是output layer了，那根据刚才所学，就可以把w1跟w2对C的偏微分算出来
+
+![Screen Shot 2022-01-15 at 9.54.21 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-15%20at%209.54.21%20PM.png)
+
+令人烦恼的是第二个case： Not Output Layer  
+
+假设红色neuron不是整个network的output  
+
+后面的其他东西可能长这样：就是z'再通过activation function得到a',再乘上另一个weight w5，再加上其他一些东西，得到za，再把a'乘上w6再加上其他一大堆东西，得到zb，然后再丢进另外两个activation function里面，现在问题是我们想要求
+$\frac{\partial{C}}{\partial{z'}}$ ,如果我们知道$\frac{\partial{C}}{\partial{z_a}}$跟$\frac{\partial{C}}{\partial{z_b}}$ ,我们就可以计算$\frac{\partial{C}}{\partial{z'}}$  
+如图：  
+
+![Screen Shot 2022-01-15 at 10.18.59 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-15%20at%2010.18.59%20PM.png)
+
+不断递归算下去，直到output layer，这听上去挺崩溃，但实际上不是这么做的，  
+
+实际上你只要换一个方向，从output layer往回算，你就会发现它的运算量跟原来的network的feedforward path 其实是一样的  
+
+如图假设，有六个neuron，六个activation function分别是z1-z6,我们现在要计算这些z对C的偏微分，本来呢，我们应该是想要知道z1的偏微分，你就要算z3，z4的偏微分，加入想知道z3的偏微分，你就要算z5跟z6的偏微分，如果我们是从z1，z2的偏微分开始算，那就没有效率，  
+
+但是如果你反过来先算z5，z6的偏微分的话，这个process，就突然之间变得有效率起来了，
+
+![Screen Shot 2022-01-15 at 10.28.45 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-15%20at%2010.28.45%20PM.png)
+
+那么怎么用z5,z6来算z3呢？如前所述，用一个op-amp来算，这每一个op-amp它放大的倍率呢就是$\sigma'(z_1)$-$\sigma'(z_4)$
+
+你先算出z5对C的偏微分，z6对C的偏微分，再把这些偏微分值乘上weight加起来，再通过op-amp,你就得到z3对C的偏微分的值和z4对C的偏微分的值，以此类推，这个步骤就叫做Backward Pass,你在做Backward Pass的时候，你实际上的做法就是，建另外一个neural network:我们本来有一个正向的neural network，里面的activation function都是sigmoid function,那现在，你在算Backward pass 的时候，你就是建一个反向的neural network,反向网络的activation function你要先算完Forward pass以后，你才算得出来  
+
+![Screen Shot 2022-01-15 at 10.39.20 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-15%20at%2010.39.20%20PM.png)
+
+## Backpropagation - Summary  
+Backpropagation是怎么做的：
+首先你做一个Forward pass，在做Forward pass的时候，你可以算出：只要你知道每一个activation function的output，即它所连接的weight的$\frac{\partial{z}}{\partial{w}}$ ,在Backward pass 里面，你要把原来的neural network的方向呢倒过来，倒过来的neural network里，它的每一个三角形的output呢就是$\frac{\partial{C}}{\partial{z}}$ ,然后把上述两个东西乘起来，就得到$\frac{\partial{C}}{\partial{w}}$ 
+
+$$
+\frac{\partial{z}}{\partial{w}}=a\\
+\\
+a \times 
+\frac{\partial{C}}{\partial{z}}=
+\frac{\partial{C}}{\partial{w}}
+$$
+
+![Screen Shot 2022-01-15 at 10.53.35 PM](https://raw.githubusercontent.com/lunnche/picgo-image/main/Screen%20Shot%202022-01-15%20at%2010.53.35%20PM.png)
+
+
