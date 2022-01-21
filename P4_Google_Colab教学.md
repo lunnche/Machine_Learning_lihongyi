@@ -82,6 +82,8 @@ gdown:Download files from google drive
 wget:Download files from the internet  
 `python <python_fiel>`:Executes a python file  
 
-到5：45  
+注意：上面这些指令都是前面加！来执行，除了`cd`，前面加%来执行  
+
+
 
 
