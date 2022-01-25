@@ -73,3 +73,31 @@ PyTorch里面的dim 和 NumPy里面的axis 一样
 ## Tensor -- Operators  
 
 到05:41
+
+* Squeeze: remove the specified dimension with length = 1  
+```
+>>> x = torch.zeros([1,2,3])
+>>> x.shape
+torch.Size([1,2,3])
+>>> x = x.squeeze(0)
+>>> x.shape
+torch.Size([2,3])
+```
+
+![image-20220125084945699](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220125084945699.png)
+
+* Unsqueeze: expand a new dimension  
+```
+>>> x = torch.zeros([2,3])
+>>> x.shape
+torch.Size([2,3])
+>>> x = x.unsqueeze(1)
+>>> x.shape
+torch.Size([2,1,3])
+```
+
+![image-20220125085433022](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220125085433022.png)
+
+* Transpose: transpose two specified dimensions  
+```
+>>> x = torch.zeros([2,
