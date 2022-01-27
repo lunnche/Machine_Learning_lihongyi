@@ -213,4 +213,150 @@ CPU(玛莎拉蒂)可以在RAM中快速获取少量的包(3 -4名乘客)，而GPU
 带宽是gpu在计算上比cpu快的主要原因之一。对于大型数据集，CPU在训练模型时需要占用大量内存。  
 计算巨大而复杂的任务会占用CPU大量的时钟周期——CPU顺序地占用任务，并且比GPU的核数更少。
 
+另一方面，一个独立的GPU，带有专用的VRAM(视频RAM)内存。因此，CPU的内存可以用于其他任务。
 
+![image-20220127174123643](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127174123643.png)
+
+2. 数据集的大小  
+在深度学习中训练一个模型需要大量的数据集，因此在内存方面需要大量的计算操作。为了高效地计算数据，GPU是一个最佳的选择。计算量越大，GPU相对CPU的优势就越大  
+
+3. 优化  
+在CPU中优化任务要容易得多。CPU内核虽然少，但比成千上万的GPU内核更强大  
+每个CPU核可以执行不同的指令(MIMD架构)，而GPU核，通常组织在32个核的块中，在给定的时间执行相同的指令(SIMD架构)
+在密集的神经网络中并行化是非常困难的，因为它需要付出很大的努力。因此，复杂的优化技术在GPU上比在CPU上更难实现  
+
+## Should I use a GPU?  
+与任何数据科学项目一样，这要视情况而定。需要考虑速度、可靠性和成本之间的权衡  
+1. 如果你的神经网络相对较小，你可以不使用GPU  
+2. 如果你的神经网络涉及到大量的计算，涉及成千上万的参数，你可能会考虑投资一个GPU  
+
+一般来说，gpu是快速机器学习的更安全的选择，因为其核心是，数据科学模型训练由简单的矩阵数学计算组成，如果并行进行计算，其速度可能会大大提高。
+
+ cpu最擅长顺序处理单个、更复杂的计算，而gpu更擅长并行处理多个、更简单的计算  
+
+ GPU计算实例的成本通常是CPU计算实例的2 - 3倍，所以除非你在基于GPU的训练模型中看到2 - 3倍的性能提升，否则我建议使用CPU。  
+
+***
+
+
+矩阵预算可以拆解诚很多互相独立的小运算，所以可以用GPU来并行跑
+
+## How to Calculate Gradient?  
+
+![image-20220127192318896](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127192318896.png)
+
+## Overview of the DNN Training Procedure  
+
+![image-20220127192505145](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127192505145.png)
+
+## Dataset & Dataloader  
+```python
+from torch.utils.data import Dataset,DataLoader  
+
+class MyDataset(Dataset):
+    def __init__(self,file):
+        self.data = ...      //Read data & preprocess
+
+    def __getitem__(self,index):
+        return self.data[index]   //Returns one sample at a time
+
+    def __len__(self):
+        return len(self.data)   //Returns the size of the dataset
+```
+
+![image-20220127194648754](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127194648754.png)
+
+shuffle 就是每次读数据出来顺序是乱的
+
+
+## torch.nn -- Neural Network Layers  
+
+![image-20220127201503559](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127201503559.png)
+
+
+
+![image-20220127201951811](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127201951811.png)
+
+W是fully connected layer的参数  
+
+![image-20220127202106265](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127202106265.png)
+
+![image-20220127202207935](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127202207935.png)
+
+![image-20220127202316598](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127202316598.png)
+
+
+***
+
+## torch.nn -- Loss Functions  
+* Mean Squared Error (for linear regression)
+nn.MSELoss()  
+
+* Cross Entropy (for classification)  
+nn.CrossEntropyLoss()  
+
+## torch.nn -- Build your own neural network  
+
+```python
+import torch.nn as nn  
+
+class MyModel(nn.Module):
+    def __init__(self):     //initialize your model & define layers
+    super(MyModel,self).__init__()
+    self.net = nn.Sequential(
+        nn.Linear(10,32),
+        nn.Sigmoid(),
+        nn.Linear(32,1)
+    )
+
+    def forward(self,x):    //Compute output of your NN
+        return self.net(x)
+```
+
+![image-20220127203715626](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127203715626.png)
+
+10就是计算前10天的数据，使用32个sigmoid 函数逼近  
+
+## torch.optim  
+
+![image-20220127204047641](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127204047641.png)
+
+## Neural Network Training  
+```python
+dataset = MyDataset(file)                    // read data via MyDataset
+tr_set = DataLoader(dataset,16,shuffle=True)  // put dataset into DataLoader
+model = MyModel().to(device)                 // contruct model and move to device(cpu/cuda)
+criterion = nn.MSELoss()                     // set loss function
+optimizer = torch.optim.SGD(model.parameters(),0.1)  //set optimizer  
+```
+
+
+
+![image-20220127205158537](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127205158537.png)
+
+step的意思就是用刚算出的gradient 去更新  
+
+## Neural Network Evaluation(Validation Set)  
+
+![image-20220127205710844](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127205710844.png)
+最后一行缩进可能有问题，应在for循环之外？  
+
+## Neural Network Evaluation (Testing Set)  
+
+![image-20220127210155168](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127210155168.png)
+
+最后的.cpu就是移到cpu上  
+
+## Save/Load a Neural Network  
+
+![image-20220127210336645](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127210336645.png)
+
+## More About PyTorch
+
+![image-20220127210454093](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127210454093.png)
+
+![image-20220127210615046](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127210615046.png)
+
+![image-20220127210651215](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127210651215.png)
+
+该学P6了
