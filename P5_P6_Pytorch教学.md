@@ -360,3 +360,27 @@ step的意思就是用刚算出的gradient 去更新
 ![image-20220127210651215](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220127210651215.png)
 
 该学P6了
+
+# Pytorch Tutorial 2
+## Documentation and Common Errors  
+
+## PyTorch Documentation  
+https://pytorch.org/docs/stable/
+
+torch.nn -> neural network
+torch.optim -> optimization algorithms
+torch.utils.data -> dataset,dataloader  
+
+## PyTorch Documentation Example  
+
+ 
+
+![image-20220130204102457](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220130204102457.png)
+
+![image-20220130204411981](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220130204411981.png)
+
+注意parameter和keyword Argument的区别，没搞懂，还有啥星号前，星号后之类。  
+
+Arguments with default value:Some arguments have a default value(keepdim=False), so passing a value of this argument is optional  
+
+到p6 03：59
