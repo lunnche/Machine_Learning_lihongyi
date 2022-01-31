@@ -384,3 +384,22 @@ torch.utils.data -> dataset,dataloader
 Arguments with default value:Some arguments have a default value(keepdim=False), so passing a value of this argument is optional  
 
 到p6 03：59
+
+## PyTorch Documentation Example  
+
+Three kinds of torch.max
+1. torch.max(input) -> Tensor
+2. torch.max(input,dim,keepdim=False, *, out=None)->(Tensor, LongTensor)
+3. torch.max(input, other, *, out=None) -> Tensor  
+
+input: Tensor,dim:int,keepdim:bool
+other:Tensor  
+
+1. torch.max(input)->Tensor
+Find the maximum value of a tensor, and return that value.  
+
+2. Find the maximum value of a tensor along a dimension,and return that value,slong with the index corresponding to that value.  
+
+3. perform element-wise comparison between two tensors of the same size, and select the maximum of the two to construct a tensor with the same size.  
+
+
