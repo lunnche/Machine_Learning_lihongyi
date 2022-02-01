@@ -403,3 +403,78 @@ Find the maximum value of a tensor, and return that value.
 3. perform element-wise comparison between two tensors of the same size, and select the maximum of the two to construct a tensor with the same size.  
 
 到05:08
+
+## PyTorch Documentation Example (Colab)  
+
+![image-20220201112247137](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220201112247137.png)
+
+## Common Errors -- Tensor on Different Device to Model  
+```
+model = torch.nn.Linear(5,1).to("cuda:0")
+x = torch.Tensor([1,2,3,4,5]).to("cpu")
+y = model(x)  
+```
+<font color="red">Tensor for * is on CPU, but expected them to be on GPU</font>
+
+=> send the tensor to GPU
+```
+x = torch.Tensor([1,2,3,4,5]).to("cuda:0")
+y = model(x)
+print(y.shape)
+```
+
+## Common Errors -- Mismatched Dimensions  
+```
+x = torch.randn(4,5)
+y = torch.randn(5,4)
+z = x + y
+```
+<font color="red">The size of tensor a (5) must match the size of tensor b (4) at non-singleton dimension 1</font>  
+
+=> the shape of a tensor is incorrect, use transpose, squeeze, unsqueeze to align the dimensions  
+```
+y = y.transpose(0,1)
+z = x + y
+print(z.shape)
+```
+
+## Common Errors -- Cuda Out of Memory  
+```python
+import torch
+import torchvision.models as models
+resnet18 = models.resnet18().to("cuda:0") # Neural Networks for Image Recognition
+data = torch.randn(512,3,244,244) # Create fake data (512 images)
+out = resnet18(data.to("cuda:0")) # Use Data as Input and Feed to Model
+print(out.shape)
+```
+
+<font color="red">CUDA out of memory.Tried to allocate 350.00 MiB(GPU 0;14.76 GiB total capacity; 11.94 GiB already allocated; 123.75 MiB free; 13.71 GiB reserved in total by PyTorch)</font>  
+
+=> The batch size of data is too large to fit in the GPU. Reduce the batch size.  
+
+如果更改为迭代数据，问题将得到解决：
+If the data is iterated (batch size = 1), the problem will be solved. You can also use DataLoader
+```
+for d in data:
+ out = resnet18(d.to("cuda:0").unsqueeze(0))
+print(out.shape)
+```
+
+```
+import torch.nn as nn
+L = nn.CrossEntropyLoss()
+outs = torch.randn(5,5)
+labels = torch.Tensor([1,2,3,4,0])
+lossval = L(outs,labels) # Calculate CrossEntropyLoss between outs and labels
+```
+<font color="red">expected scalar type Long but found Float</font>
+
+=>labels must be long tensors,cast it to type "Long" to fix this issue
+```
+labels = labels.long()
+lossval = L(outs,labels)
+print(lossval)
+```
+上面是说，有时候你会得到不匹配的张量类型，这主要是因为当你使用CrossEntropyLoss时，如果你将标签设置为1234的话，虽然看起来是整数，但实际上torch.tensor会让它变成浮点数，而标签不能是浮点数。所以你需要把张量类型变为长（long）类型
+
+完结撒花✿✿ヽ(°▽°)ノ✿   有很多地方不懂，还需要反复看，弄明白
