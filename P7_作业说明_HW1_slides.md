@@ -1,6 +1,6 @@
 # 作业说明 HW1 slides  
 ## Machine Learning HW1
-## COCID-19 Cases Prediction  
+## COVID-19 Cases Prediction  
 
 ## Objectives  
 * Solve a regression problem with deep neural networks(DNN).
