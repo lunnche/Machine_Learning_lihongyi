@@ -82,3 +82,108 @@ $$
 
 ## Grading 
 到10：28
+
+![image-20220204193413326](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220204193413326.png)
+
+## Grading -- Kaggle  
+* We might change the strong baseline if it's too hard.  
+
+![image-20220204193541400](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220204193541400.png)
+
+## Grading -- Bonus  
+* If you got 10 points, we make your code public to the whole class.  
+
+* In this case, if you also submit **a PDF report briefly describing your methods**  less than 100 words in English,you get a bonus of 0.5 pt.  
+(your report will also be available to all students)  
+
+report template 
+
+![image-20220204194142067](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220204194142067.png)
+
+## Code Submission  
+* NTU COOL (4pts)  
+    * Compress your code and report into `<student ID>_hw1.zip`
+
+    * We can only see your last submission.
+    * Do not submit your model or dataset.
+    * If your code is not reasonable,your semester grade $\times$ 0.9.
+    * You must specify the source of your code.  
+    * E.g., add a **Reference** block at the bottom of your code.  
+
+Reference格式
+```
+Reference
+
+Source:Heng-Jui Chang @ NTUEE(https://github.com/ga642381/ML2021-Spring/blob/main/HW01/HW01.ipynb)
+```
+
+* Your .zip file should include only
+    * Code: either .py or .ipynb
+    * Report: .pdf (only for those who get 10 points)  
+
+* Example:
+
+![image-20220204194953695](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220204194953695.png)
+
+* How to download your code from Google Colab?  
+
+![image-20220204195121001](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220204195121001.png)
+
+* How to compress your folder?
+* Method 3 (command line)
+```
+zip -r <name>.zip <directory name>
+e.g.
+zip -r b06901020_hw1.zip b06901020_hw1
+```
+
+## Deadlines
+* Kaggle 
+2021/03/26 23:59(UTC+8)
+* Code Submission (NTU COOL)
+2021/03/28 23:59(UTC+8)
+
+## Hints
+* Simple Baseline
+    * Sample code
+* Medium Baseline
+    * Feature selection: 40 states + 2 tested_positive
+    (will be demonstrated in class)
+* Strong Baseline
+    * Feature selection (what other features are useful?)
+    * DNN architecture (layers?dimension?activation function?)
+    * Training (mini-batch?optimizer?learning rate?)
+    * L2 regularization
+    * There are some mistakes in the sample code, can you find them?
+
+## Regulations Again  
+* You should finish your homework on your own.  
+* You should not modify your prediction files manually.
+* Do not share codes or prediction files with any living creatures.
+* Do not use any approaches to submit your results more than 5 times a day.
+* Do not search or use additional data or pre-trained models.
+* Your final grade x 0.9 if you violate any of the above rules.
+* Prof. Lee & TAs preserve the rights to change the rules & grades.  
+
+## If any questions, you can ask us via...
+* NTU COOL (recommended)
+    * https://cool.ntu.edu.tw/courses/4793
+* Email
+    * ntu-ml-2021spring-ta@googlegroups.com
+    * The title should begin with "[hw1]"
+* TA hour
+    * Each Friday during class  
+
+## Useful Links  
+* Hung-yi Lee, Regression & Gradient Descent (Mandarin)
+* Hung-yi Lee, Tips for Training Deep Networks(Mandarin)
+* Google Machine Learning Crash Course (English)
+    * (Regularization,NN Trainning)
+* https://pytorch.org/docs/stable/index.html
+* https://www.google.com/  
+
+(If Google or Stackoverflow can answer your questions, you may take advantage of them before asking the TAs.)  
+
+![image-20220204203430531](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220204203430531.png)
+
+完结撒花🌺
