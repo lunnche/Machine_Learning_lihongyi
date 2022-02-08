@@ -147,5 +147,50 @@ $$
 \vdots
 \end{matrix}
 \right]
-
 $$
+
+有了偏微分，就更新参数，怎么更新呢，所有参数减去 learning rate乘上偏微分的值，就得到一组新的参数，然后呢，这个process就一直继续下去。  
+
+![image-20220208195000395](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220208195000395.png)
+
+![image-20220208195337426](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220208195337426.png)
+
+## Gradient Descent  
+This is the "learning" of machines in deep learning......  
+    Even alpha go using this approach.  
+
+![image-20220208195557499](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220208195557499.png)
+
+几年前做深度学习很痛苦，一训练一周，而且要自己实现backpropagation算法，现在呢，有太多的包可以帮你算，  
+
+backpropagation就是算$\frac{\partial{L}}{\partial{w}}$的一个比较有效率的方法。  
+
+75% deep learning 的专家 不会算 微分  
+
+![image-20220208200122164](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220208200122164.png)
+
+最后一个问题：
+What are the benefits of deep architecture?  
+
+## Deeper is Better?  
+
+![image-20220208200509795](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220208200509795.png)
+
+## Universality Theorem  
+
+**Any continuous function f**  
+$$
+f\ :\ R^N\ \rightarrow\ R^M
+$$
+**Can be realized by a network with one hidden layer**  
+**(given enough hidden neurons)**  
+
+![image-20220208200933105](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220208200933105.png)
+
+那么既然一层hidden layer就能表示任何函数，而机器学习就是要找一个函数，那么做deep的意义何在？   
+
+一些参考：  
+
+![image-20220208201153357](https://raw.githubusercontent.com/lunnche/picgo-image/main/image-20220208201153357.png)
+
+
